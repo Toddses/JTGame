@@ -1,1 +1,10 @@
-Initial Repository
+This is the PyCharm project and source code for the 2d game.
+
+Can access debug mode from a command prompt:
+> python JTGame -debug
+
+Sound debugging: W, A, S, D play drum sounds. Space bar starts and stops some music.
+
+
+03/23/2014: Initial pass at the AssetManager and sound engine.
+03/20/2014: Initial Repository

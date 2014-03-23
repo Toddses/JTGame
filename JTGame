@@ -1,0 +1,58 @@
+import sys
+
+# Use this to check the command line argument(s).
+debugging = 0
+if len(sys.argv) > 1:
+
+    # Simply flip the bit that tells the program to go into debug mode.
+    if sys.argv[1] == "-debug":
+        debugging = 1
+
+# Initialize Pygame.
+import pygame
+from pygame.locals import *
+pygame.init()
+# We may decide to just initialize all of pygame, or just intialize the modules we need.
+#pygame.display.init()
+#pygame.mixer.init()
+
+# All of the pygame modules fail silently, so do some error checking.
+if not pygame.mixer.get_init():
+    raise ImportError("pygame.mixer failed to initialize.")
+if not pygame.display.get_init():
+    raise ImportError("pygame.display failed to initialize.")
+
+# Initialize the asset manager.
+import assetmanager
+assets = assetmanager.AssetManager(debugging)
+
+# Global variables.
+music_playing = 0
+
+# Define the window parameters.
+size = width, height = 1024, 768
+screen = pygame.display.set_mode(size)
+
+# Main game loop.
+while 1:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT : sys.exit()
+
+        # Debugging the sound engine: W, A, S, D plays a drum sound.
+        # Space bar starts and stops some music.
+        if debugging:
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_w:
+                assets.highhat.play()
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_a:
+                assets.lowtom.play()
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_s:
+                assets.snare.play()
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_d:
+                assets.tambourine.play()
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                if music_playing:
+                    music_playing = 0
+                    assets.music.stop()
+                else:
+                    music_playing = 1
+                    assets.music.play()
